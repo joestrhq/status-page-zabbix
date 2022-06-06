@@ -1,0 +1,62 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "1bc941174cd24f7b65a0d1778c809ba4",
+    "packages": [
+        {
+            "name": "intellitrend/zabbixapi",
+            "version": "v3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/intellitrend/zabbixapi-php.git",
+                "reference": "ff8d960eb3dbeff0dc86a02e095b6c72d0231222"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/intellitrend/zabbixapi-php/zipball/ff8d960eb3dbeff0dc86a02e095b6c72d0231222",
+                "reference": "ff8d960eb3dbeff0dc86a02e095b6c72d0231222",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IntelliTrend\\Zabbix\\": "/src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "IntelliTrend",
+                    "email": "support@intellitrend.de",
+                    "homepage": "https://www.intellitrend.de"
+                }
+            ],
+            "description": "Zabbix API client for PHP with session cache and SSL management",
+            "support": {
+                "docs": "https://github.com/intellitrend/zabbixapi-php",
+                "issues": "https://github.com/intellitrend/zabbixapi-php/issues",
+                "source": "https://github.com/intellitrend/zabbixapi-php/tree/v.3.1.0"
+            },
+            "time": "2022-03-16T15:00:31+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
+}

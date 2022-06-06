@@ -1,0 +1,13 @@
+{
+    "name": "vendor/php-project1",
+    "description": "Description of project PhpProject1.",
+    "authors": [
+        {
+            "name": "Joel Strasser (joestr)",
+            "email": "joelstrasser1@gmail.com"
+        }
+    ],
+    "require": {
+        "intellitrend/zabbixapi": "v3.1.0"
+    }
+}
