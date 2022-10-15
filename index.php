@@ -4,8 +4,7 @@ require('vendor/autoload.php');
 
 use IntelliTrend\Zabbix\ZabbixApi;
 
-$zabbixApiServerUri = "";
-$zabbixApiAccessToken = "";
+include_once './config.sample.php';
 
 $zabbixApiOptions = array('sslVerifyPeer' => true, 'sslVerifyHost' => true);
 $zabbixApi = new ZabbixApi();
@@ -66,19 +65,19 @@ try {
             </thead>
             <tbody>
               <?php foreach($result as $resultRow) { ?>
-              <?php if ($resultRow["sortorder"] % 10 == 0) { ?>
-              <tr class="table-light">
-                <td><?php printf($resultRow["sortorder"]); ?></td>
-                <td><?php printf($resultRow["serviceid"]); ?></td>
-                <td><?php printf($resultRow["name"]); ?></td>
-                <td></i></td>
-              <?php } else if($resultRow["status"] == 0) { ?>
+              <?php if($resultRow["status"] == -1) { ?>
               <tr class="table-success">
                 <td><?php printf($resultRow["sortorder"]); ?></td>
                 <td><?php printf($resultRow["serviceid"]); ?></td>
                 <td><?php printf($resultRow["name"]); ?></td>
                 <td><i class="bi bi-check-circle"></i></td>
-              <?php } else if($resultRow["status"] == 1) { ?>
+              <?php } else if($resultRow["status"] == 2) { ?>
+              <tr class="table-danger">
+                <td><?php printf($resultRow["sortorder"]); ?></td>
+                <td><?php printf($resultRow["serviceid"]); ?></td>
+                <td><?php printf($resultRow["name"]); ?></td>
+                <td><i class="bi bi-exclamation-circle"></i></td>
+              <?php } else if($resultRow["status"] > 4) { ?>
               <tr class="table-danger">
                 <td><?php printf($resultRow["sortorder"]); ?></td>
                 <td><?php printf($resultRow["serviceid"]); ?></td>
