@@ -4,7 +4,7 @@ require('vendor/autoload.php');
 
 use IntelliTrend\Zabbix\ZabbixApi;
 
-include_once './config.sample.php';
+include_once './config.php';
 
 $zabbixApiOptions = array('sslVerifyPeer' => true, 'sslVerifyHost' => true);
 $zabbixApi = new ZabbixApi();
