@@ -71,13 +71,13 @@ try {
                 <td><?php printf($resultRow["serviceid"]); ?></td>
                 <td><?php printf($resultRow["name"]); ?></td>
                 <td><i class="bi bi-check-circle"></i></td>
-              <?php } else if($resultRow["status"] == 2) { ?>
-              <tr class="table-danger">
+              <?php } else if($resultRow["status"] >= 2 && $resultRow["status"] <= 3) { ?>
+              <tr class="table-warning">
                 <td><?php printf($resultRow["sortorder"]); ?></td>
                 <td><?php printf($resultRow["serviceid"]); ?></td>
                 <td><?php printf($resultRow["name"]); ?></td>
                 <td><i class="bi bi-exclamation-circle"></i></td>
-              <?php } else if($resultRow["status"] > 4) { ?>
+              <?php } else if($resultRow["status"] >= 4) { ?>
               <tr class="table-danger">
                 <td><?php printf($resultRow["sortorder"]); ?></td>
                 <td><?php printf($resultRow["serviceid"]); ?></td>
