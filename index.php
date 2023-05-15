@@ -58,7 +58,6 @@ try {
         <p>
           <table class="table">
             <thead>
-              <th>Sort order</th>
               <th>Service ID</th>
               <th>Name</th>
               <th>Status</th>
@@ -67,19 +66,16 @@ try {
               <?php foreach($result as $resultRow) { ?>
               <?php if($resultRow["status"] == -1) { ?>
               <tr class="table-success">
-                <td><?php printf($resultRow["sortorder"]); ?></td>
                 <td><?php printf($resultRow["serviceid"]); ?></td>
                 <td><?php printf($resultRow["name"]); ?></td>
                 <td><i class="bi bi-check-circle"></i></td>
               <?php } else if($resultRow["status"] >= 2 && $resultRow["status"] <= 3) { ?>
               <tr class="table-warning">
-                <td><?php printf($resultRow["sortorder"]); ?></td>
                 <td><?php printf($resultRow["serviceid"]); ?></td>
                 <td><?php printf($resultRow["name"]); ?></td>
                 <td><i class="bi bi-exclamation-circle"></i></td>
               <?php } else if($resultRow["status"] >= 4) { ?>
               <tr class="table-danger">
-                <td><?php printf($resultRow["sortorder"]); ?></td>
                 <td><?php printf($resultRow["serviceid"]); ?></td>
                 <td><?php printf($resultRow["name"]); ?></td>
                 <td><i class="bi bi-x-circle"></i></td>
