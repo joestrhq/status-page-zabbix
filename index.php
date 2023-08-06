@@ -11,7 +11,7 @@ $zabbixApi = new ZabbixApi();
 
 try {
 	$zabbixApi->loginToken($zabbixApiServerUri, $zabbixApiAccessToken, $zabbixApiOptions);
-	$result = $zabbixApi->call('service.get', array("output" => "extend", "sortfield" => "sortorder"));
+	$zabbixServices = $zabbixApi->call('service.get', array("output" => "extend", "sortfield" => "sortorder"));
 } catch (Exception $ex) {
 	print "==== Exception ===\n";
 	print 'ErrorCode: '.$ex->getCode()."\n";
@@ -22,14 +22,14 @@ try {
 ?>
 <html>
   <head>
-    <link href="https://assets.x3cdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://assets.x3cdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://assets.x3cdn.com/bootstrap-icons/1.8.1/font/bootstrap-icons.css" rel="stylesheet">
     <style>
       main > .container {
         padding-top: 60px;
       }
     </style>
-    <script src="https://assets.x3cdn.com/bootstrap/5.1.3/js/bootstrap.bundle.js"></script>
+    <script src="https://assets.x3cdn.com/bootstrap/5.3.0/js/bootstrap.bundle.js"></script>
     <meta charset="UTF-8">
     <title>Status</title>
   </head>
@@ -56,34 +56,32 @@ try {
         <h1 class="mt-5">Service status</h1>
         <p class="lead">Current information pulled from Zabbix.</p>
         <p>
-          <table class="table">
-            <thead>
-              <th>Service ID</th>
-              <th>Name</th>
-              <th>Status</th>
-            </thead>
-            <tbody>
-              <?php foreach($result as $resultRow) { ?>
-              <?php if($resultRow["status"] == -1) { ?>
-              <tr class="table-success">
-                <td><?php printf($resultRow["serviceid"]); ?></td>
-                <td><?php printf($resultRow["name"]); ?></td>
-                <td><i class="bi bi-check-circle"></i></td>
-              <?php } else if($resultRow["status"] >= 2 && $resultRow["status"] <= 3) { ?>
-              <tr class="table-warning">
-                <td><?php printf($resultRow["serviceid"]); ?></td>
-                <td><?php printf($resultRow["name"]); ?></td>
-                <td><i class="bi bi-exclamation-circle"></i></td>
-              <?php } else if($resultRow["status"] >= 4) { ?>
-              <tr class="table-danger">
-                <td><?php printf($resultRow["serviceid"]); ?></td>
-                <td><?php printf($resultRow["name"]); ?></td>
-                <td><i class="bi bi-x-circle"></i></td>
+          <?php foreach($zabbixServices as $zabbixService) { ?>
+          <div class="card mt-2 mr-2 mb-2 ml-2" >
+            <div class="card-header">
+              <span><?php printf($zabbixService["name"]); ?></span>
+              <?php if($zabbixService["status"] == -1) { ?>
+              <span class="float-end text-success">Operational&nbsp;<i class="bi bi-check-circle"></i></span>
+              <?php } else if($zabbixService["status"] >= 2 && $zabbixService["status"] <= 3) { ?>
+              <span class="float-end text-warning">Degraded&nbsp;<i class="bi bi-exclamation-circle"></i></span>
+              <?php } else if($zabbixService["status"] >= 4) { ?>
+              <span class="float-end text-danger">Outage&nbsp;<i class="bi bi-x-circle"></i></span>
               <?php } ?>
-              </tr>
-              <?php } ?>
-            </tbody>
-          </table>
+            </div>
+            <div class="card-body">
+              <p>
+                <?php
+                  $zabbixSlas = $zabbixApi->call('sla.get', array('output' => 'extend', 'serviceids' => $zabbixService['serviceid']));
+                  $zabbixSlis = $zabbixApi->call('sla.getsli', array('periods' => '1', 'slaid' => $zabbixSlas[0]['slaid']));
+                ?>
+                <span>Uptime</span>
+                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="<?php printf($zabbixSlis['sli'][0][0]['sli'])?>" aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress-bar" style="width: <?php printf($zabbixSlis['sli'][0][0]['sli'])?>%"><?php printf($zabbixSlis['sli'][0][0]['sli'])?>%</div>
+                </div>
+              </p>
+            </div>
+          </div>
+          <?php } ?>
         </p>
       </div>
     </main>
@@ -94,3 +92,4 @@ try {
     </footer>
   </body>
 </html>
+
