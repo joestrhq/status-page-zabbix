@@ -87,7 +87,7 @@ try {
     </main>
     <footer class="footer mt-auto py-3 bg-light">
       <div class="container">
-        <span class="text-muted">Just a sticky footer ... ignore it.</span>
+        <span class="text-muted"><i class="bi bi-github"></i>&nbsp;<a href="https://github.com/joestrhq/status-page-zabbix" target="_blank">joestrhq/status-page-zabbix</span>
       </div>
     </footer>
   </body>
