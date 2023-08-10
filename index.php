@@ -19,6 +19,24 @@ try {
 	exit;
 }
 
+function getColBlockStyleForIndex($index) {
+  if ($index < 14) {
+    return 'd-none d-lg-block';
+  } else if ($index < 21) {
+    return 'd-none d-md-block d-lg-none';
+  } else {
+    return 'd-block';
+  }
+}
+
+function getColBlockColorFor($sliValue, $sloValue) {
+  if ($sliValue < $sloValue) {
+    return 'bg-warning';
+  } else {
+    return 'bg-success';
+  }
+}
+
 ?>
 <html>
   <head>
@@ -30,6 +48,13 @@ try {
       }
     </style>
     <script src="https://assets.x3cdn.com/bootstrap/5.3.0/js/bootstrap.bundle.js"></script>
+    <script>
+      function onDomContentLoaded(event) {
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+      }
+      document.addEventListener("DOMContentLoaded", onDomContentLoaded);
+    </script>
     <meta charset="UTF-8">
     <title>Status</title>
   </head>
@@ -57,7 +82,7 @@ try {
         <p class="lead">Current information pulled from Zabbix.</p>
         <p>
           <?php foreach($zabbixServices as $zabbixService) { ?>
-          <div class="card mt-2 mr-2 mb-2 ml-2" >
+          <div class="card mt-2 mr-2 mb-4 ml-2" >
             <div class="card-header">
               <span><?php printf($zabbixService["name"]); ?></span>
               <?php if($zabbixService["status"] == -1) { ?>
@@ -69,16 +94,38 @@ try {
               <?php } ?>
             </div>
             <div class="card-body">
-              <p>
-                <?php
-                  $zabbixSlas = $zabbixApi->call('sla.get', array('output' => 'extend', 'serviceids' => $zabbixService['serviceid']));
-                  $zabbixSlis = $zabbixApi->call('sla.getsli', array('periods' => '1', 'slaid' => $zabbixSlas[0]['slaid']));
-                ?>
-                <span>Uptime</span>
-                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="<?php printf($zabbixSlis['sli'][0][0]['sli'])?>" aria-valuemin="0" aria-valuemax="100">
-                  <div class="progress-bar" style="width: <?php printf($zabbixSlis['sli'][0][0]['sli'])?>%"><?php printf($zabbixSlis['sli'][0][0]['sli'])?>%</div>
-                </div>
-              </p>
+              <div class="row">
+                  <?php
+                    $zabbixSlas = $zabbixApi->call('sla.get', array('output' => 'extend', 'serviceids' => $zabbixService['serviceid']));
+                    $zabbixSli = $zabbixApi->call('sla.getsli', array('periods' => '29', 'slaid' => $zabbixSlas[0]['slaid']));
+                    $zabbixSliPeriods = $zabbixSli['periods'];
+                    $zabbixSliSlis = $zabbixSli['sli'];
+                  ?>
+                  <?php
+                    $index = 0;
+                    foreach($zabbixSliSlis as $zabbixSliSli) {
+                  ?>
+                  <div
+                    class="col <?php printf(getColBlockStyleForIndex($index)); ?> mx-1 <?php printf(getColBlockColorFor($zabbixSliSli[0]['sli'], $zabbixSlas[0]['slo'])); ?>"
+                    style="min-height: 20px; height: 20px;"
+                    data-bs-toggle="popover"
+                    data-bs-placement="bottom"
+                    data-bs-trigger="hover focus"
+                    data-bs-title="<?php printf(date("D M j G:i:s T Y", $zabbixSliPeriods[$index]["period_from"])); ?>"
+                    data-bs-content="Uptime: <?php printf($zabbixSliSli[0]['sli']); ?>%"
+                  ></div>
+                  <?php 
+                    $index++;
+                    }
+                  ?>
+              </div>
+              <div class="row pt-2">
+                <div class="d-none d-lg-block col-lg-2 text-muted text-start">28 days ago</div>
+                <div class="d-none d-sm-none d-md-block d-lg-none col-md-2 text-muted text-start">14 days ago</div>
+                <div class="d-block d-sm-block d-md-none col-4 col-sm-4 text-muted text-start">7 days ago</div>
+                <div class="col-4 col-sm-4 col-md-8 text-muted text-center"><hr/></div>
+                <div class="col-4 col-sm-4 col-md-2 text-muted text-end">Today</div>
+              </div>
             </div>
           </div>
           <?php } ?>
