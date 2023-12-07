@@ -20,10 +20,12 @@ try {
 }
 
 function getColBlockStyleForIndex($index) {
-  if ($index < 14) {
+  if ($index < 7) {
+    return 'd-none d-xl-block';
+  } else if ($index < 14) {
     return 'd-none d-lg-block';
   } else if ($index < 21) {
-    return 'd-none d-md-block d-lg-none';
+    return 'd-none d-md-block';
   } else {
     return 'd-block';
   }
@@ -120,9 +122,10 @@ function getColBlockColorFor($sliValue, $sloValue) {
                   ?>
               </div>
               <div class="row pt-2">
-                <div class="d-none d-lg-block col-lg-2 text-muted text-start">28 days ago</div>
-                <div class="d-none d-sm-none d-md-block d-lg-none col-md-2 text-muted text-start">14 days ago</div>
-                <div class="d-block d-sm-block d-md-none col-4 col-sm-4 text-muted text-start">7 days ago</div>
+                <div class="d-none d-xl-block col-xl-2 text-muted text-start">28 days ago</div>
+                <div class="d-none d-lg-block d-xl-none col-lg-2 text-muted text-start">21 days ago</div>
+                <div class="d-none d-md-block d-lg-none col-md-2 text-muted text-start">14 days ago</div>
+                <div class="d-block d-md-none col-4 text-muted text-start">7 days ago</div>
                 <div class="col-4 col-sm-4 col-md-8 text-muted text-center"><hr/></div>
                 <div class="col-4 col-sm-4 col-md-2 text-muted text-end">Today</div>
               </div>
