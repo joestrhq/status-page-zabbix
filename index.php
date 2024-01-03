@@ -96,9 +96,12 @@ function getColBlockColorFor($sliValue, $sloValue) {
               <?php } ?>
             </div>
             <div class="card-body">
-              <div class="row">
+              <?php
+                $zabbixSlas = $zabbixApi->call('sla.get', array('output' => 'extend', 'serviceids' => $zabbixService['serviceid'], 'selectExcludedDowntimes' => array('name', 'period_from', 'period_to')));
+                $zabbixSlaExcludedDowntimes = $zabbixSlas[0]['excluded_downtimes'];
+              ?>
+              <div class="row pt-2">
                   <?php
-                    $zabbixSlas = $zabbixApi->call('sla.get', array('output' => 'extend', 'serviceids' => $zabbixService['serviceid']));
                     $zabbixSli = $zabbixApi->call('sla.getsli', array('periods' => '29', 'slaid' => $zabbixSlas[0]['slaid']));
                     $zabbixSliPeriods = $zabbixSli['periods'];
                     $zabbixSliSlis = $zabbixSli['sli'];
@@ -129,6 +132,35 @@ function getColBlockColorFor($sliValue, $sloValue) {
                 <div class="col-4 col-sm-4 col-md-8 text-muted text-center"><hr/></div>
                 <div class="col-4 col-sm-4 col-md-2 text-muted text-end">Today</div>
               </div>
+              <?php
+                if (count($zabbixSlaExcludedDowntimes) > 0) {
+              ?>
+              <div class="row pt-2">
+                <div class="col-12">
+                <?php
+                  foreach($zabbixSlaExcludedDowntimes as $zabbixSlaExcludedDowntime) {
+                    $now = time();
+                    $excludedDowntimeFrom = intval($zabbixSlaExcludedDowntime["period_from"]);
+                    $excludedDowntimeTo = intval($zabbixSlaExcludedDowntime["period_to"]);
+                    $excludedDowntimeName = $zabbixSlaExcludedDowntime["name"];
+                    if ($now < $excludedDowntimeTo) {
+                ?>
+                <div class="alert alert-primary d-flex align-items-center p-2 m-0" role="alert">
+                  <i class="bi bi-info-circle-fill flex-shrink-0 me-2"></i>
+                  <div>
+                    <p class="p-0 m-0">From <b><?php printf(date("D M j G:i:s T Y", $excludedDowntimeFrom)); ?></b> until <b><?php printf(date("D M j G:i:s T Y", $excludedDowntimeTo)); ?></b>:</p>
+                    <p class="p-0 m-0"><?php print($excludedDowntimeName); ?></p>
+                  </div>
+                </div>
+                <?php
+                    }
+                  }
+                ?>
+                </div>
+              </div>
+              <?php
+                }
+              ?>
             </div>
           </div>
           <?php } ?>
