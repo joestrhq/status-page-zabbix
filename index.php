@@ -42,14 +42,14 @@ function getColBlockColorFor($sliValue, $sloValue) {
 ?>
 <html>
   <head>
-    <link href="https://assets.x3cdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://assets.x3cdn.com/bootstrap-icons/1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="./assets/libraries/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./assets/libraries/bootstrap-icons/1.8.1/font/bootstrap-icons.css" rel="stylesheet">
     <style>
       main > .container {
         padding-top: 60px;
       }
     </style>
-    <script src="https://assets.x3cdn.com/bootstrap/5.3.0/js/bootstrap.bundle.js"></script>
+    <script src="./assets/libraries/bootstrap/5.3.0/js/bootstrap.bundle.js"></script>
     <script>
       function onDomContentLoaded(event) {
         const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
